@@ -6,7 +6,12 @@
     "declaration": false,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
+    "strictPropertyInitialization": false,
     "experimentalDecorators": true,
+    "noPropertyAccessFromIndexSignature": false,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
@@ -14,7 +19,12 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@nft-marketplace/frontend/*": ["app/frontend/src/*"],
+      "@nft-marketplace/backend/*": ["app/backend/src/*"],
+      "@nft-marketplace/react/*": ["libraries/react-shared-libs/src/*"],
+      "@nft-marketplace/nestjs-libs/*": ["libraries/nestjs-libs/src/*"],
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
