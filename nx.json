@@ -18,7 +18,7 @@
     ],
     "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"]
   },
-  "nxCloudId": "670e18316774cc625010e615",
+  "nxCloudId": "670e43fa22b1a18844d39505",
   "plugins": [
     {
       "plugin": "@nx/next/plugin",
@@ -38,30 +38,42 @@
         "ciTargetName": "e2e-ci"
       }
     },
+    { "plugin": "@nx/eslint/plugin", "options": { "targetName": "lint" } },
     {
-      "plugin": "@nx/eslint/plugin",
+      "plugin": "@nx/jest/plugin",
+      "options": { "targetName": "test" },
+      "exclude": ["apps/backend-e2e/**/*"]
+    },
+    {
+      "plugin": "@nx/webpack/plugin",
       "options": {
-        "targetName": "lint"
+        "buildTargetName": "build",
+        "serveTargetName": "serve",
+        "previewTargetName": "preview"
       }
     },
     {
-      "plugin": "@nx/jest/plugin",
+      "plugin": "@nx/vite/plugin",
       "options": {
-        "targetName": "test"
+        "buildTargetName": "build",
+        "testTargetName": "test",
+        "serveTargetName": "serve",
+        "previewTargetName": "preview",
+        "serveStaticTargetName": "serve-static",
+        "typecheckTargetName": "typecheck"
       }
     }
   ],
   "targetDefaults": {
-    "e2e-ci--**/*": {
-      "dependsOn": ["^build"]
+    "e2e-ci--**/*": { "dependsOn": ["^build"] },
+    "@nx/js:tsc": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
     }
   },
   "generators": {
-    "@nx/next": {
-      "application": {
-        "style": "tailwind",
-        "linter": "eslint"
-      }
-    }
+    "@nx/next": { "application": { "style": "tailwind", "linter": "eslint" } },
+    "@nx/react": { "library": { "unitTestRunner": "vitest" } }
   }
 }
