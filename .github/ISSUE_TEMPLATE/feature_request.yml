@@ -1,0 +1,53 @@
+name: 🚀 Feature
+description: 'Submit a proposal for a new feature'
+title: '🚀 Give your feature a title'
+labels: ['type: feature']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this feature request!
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: '🔖 Feature description'
+      description: 'A clear and concise description of what the feature is.'
+      placeholder: 'You should add ...'
+    validations:
+      required: true
+  - type: textarea
+    id: pitch
+    attributes:
+      label: '📋 Pitch'
+      description: 'Please explain why this feature should be implemented and how it would be used. Add examples, if applicable.'
+      placeholder: 'In my use-case, ...'
+    validations:
+      required: true
+  - type: textarea
+    id: implementation-idea
+    attributes:
+      label: '💡 Implementation idea'
+      description: 'If you have any ideas on how this should be implemented.'
+      placeholder: 'Not obligatory, but ideas as to the implementation of the addition or change are welcome!'
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: '🔄 Alternatives considered'
+      description: 'If applicable, please share here any alternative solutions or features considered.'
+      placeholder: "Not obligatory, but please share if you've considered any alternative solutions or features."
+  - type: textarea
+    id: no-duplicate-issues
+    attributes:
+      label: '📎 Please check if someone has already submitted this feature request'
+      description: 'Have you Googled for a similar issue or checked our older issues for a similar bug?'
+      placeholder: 'A similar issue can be found [here](), but no duplicate issue was found.'
+      validations:
+        required: true
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: '📜 Code of Conduct'
+      description: 'By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/rohitdash08/nft-marketplace/blob/main/CODE_OF_CONDUCT.md)'
+      options:
+        - label: "I agree to follow this project's Code of Conduct"
+          required: true
