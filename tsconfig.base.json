@@ -24,7 +24,10 @@
       "@nft-marketplace/backend/*": ["app/backend/src/*"],
       "@nft-marketplace/react/*": ["libraries/react-shared-libs/src/*"],
       "@nft-marketplace/nestjs-libs/*": ["libraries/nestjs-libs/src/*"],
+<<<<<<< HEAD
       "@nft-marketplace/helpers/*": ["libraries/helpers/src/*"],
+=======
+>>>>>>> ae5cfce45a433dd956fbf4eac292a04a9de5f561
     }
   },
   "exclude": ["node_modules", "tmp"]
