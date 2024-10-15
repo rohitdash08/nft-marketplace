@@ -66,13 +66,13 @@ Run the following commands to set up your environment:
 - Frontend
 
 ```bash
-nx serve frontend
+npm run dev:frontend
 ```
 
 - Backend
 
 ```bash
-nx serve backend
+npm run dev:backend
 ```
 
 - Smart Development:
