@@ -1,10 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-
-interface GoogleLoginProps {
-  onSuccess: (token: string) => void;
-}
+import { useAuth } from '../contexts/AuthContext';
 
 declare global {
   interface Window {
@@ -19,7 +16,9 @@ declare global {
   }
 }
 
-export default function GoogleLogin({ onSuccess }: GoogleLoginProps) {
+export default function GoogleLogin() {
+  const { login } = useAuth();
+
   useEffect(() => {
     const script = document.createElement('script');
     script.src = 'https://accounts.google.com/gsi/client';
@@ -46,8 +45,22 @@ export default function GoogleLogin({ onSuccess }: GoogleLoginProps) {
     };
   }, []);
 
-  const handleCredentialResponse = (response: any) => {
-    onSuccess(response.credential);
+  const handleCredentialResponse = async (response: any) => {
+    try {
+      const result = await fetch('/api/auth/google', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: response.credential }),
+      });
+      const data = await result.json();
+      if (data.token) {
+        login(data.token);
+      } else {
+        throw new Error('Login failed');
+      }
+    } catch (error) {
+      console.error('Google login error:', error);
+    }
   };
 
   return <div id="googleButton"></div>;

@@ -4,23 +4,22 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-google-oauth20';
 
 @Injectable()
-export class GithubStrategy extends PassportStrategy(Strategy, 'google') {
+export class GithubStrategy extends PassportStrategy(Strategy, 'github') {
   constructor() {
     super({
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: 'http://localhost:3000/api/auth/google/callback',
+      clientID: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+      callbackURL: 'http://localhost:3000/api/auth/github/callback',
       scope: ['email', 'profile'],
     });
   }
 
   async validate(accessToken: string, refreshToken: string, profile: any) {
-    const { name, emails, photos } = profile;
+    const { id, emails,username  } = profile;
     const user = {
+      githubId: id,
+      username: username,
       email: emails[0].value,
-      firstName: name.givenName,
-      lastName: name.familyName,
-      picture: photos[0].value,
       accessToken,
     };
     return user;

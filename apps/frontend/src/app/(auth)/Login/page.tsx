@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import GoogleLogin from '../../components/GoogleLogin';
 import GithubLogin from '../../components/GithubLogin';
-import AppleLogin from '../../components/AppleLogin';
+import AppleLogin from '../../components/AppleLogin'
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -12,10 +12,18 @@ export default function LoginPage() {
 
   const handleLogin = async (token: string) => {
     try {
-      // Here you would typically send the token to your backend for verification
-      // and receive a JWT token in response
-      // For simplicity, we're just using the received token directly
-      login(token);
+      // This token needs to be sent to your backend for verification
+      const response = await fetch('/api/auth/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token }),
+      });
+      const data = await response.json();
+      if (data.success) {
+        login(data.token); // login is the method from your context
+      } else {
+        setError('Failed to login. Please try again.');
+      }
     } catch (err) {
       setError('Failed to login. Please try again.');
     }
@@ -27,9 +35,9 @@ export default function LoginPage() {
         <h1 className="text-2xl font-bold mb-4">Login</h1>
         {error && <p className="text-red-500 mb-4">{error}</p>}
         <div className="space-y-4">
-          <GoogleLogin onSuccess={handleLogin} />
-          <GithubLogin onSuccess={handleLogin} />
-          <AppleLogin onSuccess={handleLogin} />
+          <GoogleLogin  />
+          <GithubLogin  />
+          <AppleLogin/>
         </div>
       </div>
     </div>

@@ -1,9 +1,12 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
-
-interface User {
+'use client'
+import React, { createContext, useContext } from 'react';
+import { useState ,useEffect } from 'react';
+type User = {
   id: string;
+  name: string;
   email: string;
-}
+  // Add any other properties that your user object might have
+};
 
 interface AuthContextType {
   user: User | null;
@@ -21,14 +24,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (token) {
       // Decode the token and set the user
       const decodedToken = JSON.parse(atob(token.split('.')[1]));
-      setUser({ id: decodedToken.sub, email: decodedToken.username });
+      setUser({ id: decodedToken.sub, email: decodedToken.username,name: decodedToken.name || '' });
     }
   }, []);
 
   const login = (token: string) => {
     localStorage.setItem('token', token);
     const decodedToken = JSON.parse(atob(token.split('.')[1]));
-    setUser({ id: decodedToken.sub, email: decodedToken.username });
+    setUser({ 
+      id: decodedToken.sub, 
+      email: decodedToken.username,
+      name: decodedToken.name || '' // Add this line
+    });
   };
 
   const logout = () => {

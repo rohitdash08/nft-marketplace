@@ -13,6 +13,7 @@
   "private": true,
   "dependencies": {
     "@nestjs/common": "^10.0.2",
+    "@nestjs/config": "^3.2.3",
     "@nestjs/core": "^10.0.2",
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/microservices": "^10.3.1",
@@ -21,6 +22,7 @@
     "@nestjs/schedule": "^4.0.0",
     "@nestjs/serve-static": "^4.0.1",
     "@nestjs/swagger": "^7.3.0",
+    "@nestjs/typeorm": "^10.0.2",
     "@nx/eslint": "19.7.2",
     "@nx/eslint-plugin": "19.7.2",
     "@nx/jest": "19.7.2",
@@ -40,6 +42,7 @@
     "crypto": "^1.0.1",
     "express": "^4.21.1",
     "jsonwebtoken": "^9.0.2",
+    "jwks-rsa": "^3.1.0",
     "next": "14.2.3",
     "next-plausible": "^3.12.0",
     "nx": "19.7.2",
@@ -48,10 +51,13 @@
     "passport-github2": "^0.1.12",
     "passport-google-oauth20": "^2.0.0",
     "passport-jwt": "^4.0.1",
+    "pg": "^8.13.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.8.0"
+    "rxjs": "^7.8.0",
+    "typeorm": "^0.3.20",
+    "winston": "^3.15.0"
   },
   "devDependencies": {
     "@heroicons/react": "^2.1.5",

@@ -4,12 +4,12 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-google-oauth20';
 
 @Injectable()
-export class AppleStrategy extends PassportStrategy(Strategy, 'google') {
+export class AppleStrategy extends PassportStrategy(Strategy, 'apple') {
   constructor() {
     super({
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: 'http://localhost:3000/api/auth/google/callback',
+      callbackURL: 'http://localhost:3000/api/auth/apple/callback',
       scope: ['email', 'profile'],
     });
   }
