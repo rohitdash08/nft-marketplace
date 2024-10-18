@@ -58,7 +58,7 @@ export class AuthService {
   // Do the same for githubLogin and appleLogin
 
   async githubLogin(code: string) {
-    try {
+    try { 
       const githubUser = await this.getGithubUser(code);
       const user = await this.usersService.findOrCreate({
         email: githubUser.email,
@@ -83,10 +83,12 @@ export class AuthService {
         provider: 'apple',
         providerId: appleUser.sub,
       });
+  
+      // Log the user in and return the result
       return this.login(user);
-
+  
     } catch (error) {
-      this.logger.error('Apple login failed', error.stack);
+      this.logger.error(`Apple login failed for token: ${token}`, error.stack);
       throw new UnauthorizedException('Invalid Apple token');
     }
   }
@@ -99,30 +101,50 @@ export class AuthService {
   }
 
   private async getGithubUser(code: string) {
-    const { data: accessTokenResponse } = await axios.post(
-      'https://github.com/login/oauth/access_token',
-      {
-        client_id: this.configService.get('GITHUB_CLIENT_ID'),
-        client_secret: this.configService.get('GITHUB_CLIENT_SECRET'),
-        code,
-      },
-      {
-        headers: { Accept: 'application/json' },
+    try {
+      const { data: accessTokenResponse } = await axios.post(
+        'https://github.com/login/oauth/access_token',
+        {
+          client_id: process.env.GITHUB_CLIENT_ID,
+          client_secret: process.env.GITHUB_CLIENT_SECRET,
+          code,
+        },
+        {
+          headers: { Accept: 'application/json' },
+        }
+      );
+  
+      // Log the response from GitHub
+      console.log('Access Token Response:', accessTokenResponse);
+  
+      // Handle access token errors
+      if (accessTokenResponse.error) {
+        this.logger.error('Error retrieving access token from GitHub', accessTokenResponse.error);
+        throw new UnauthorizedException('Invalid GitHub code');
       }
-    );
-
-    const { data: githubUser } = await axios.get('https://api.github.com/user', {
-      headers: { Authorization: `Bearer ${accessTokenResponse.access_token}` },
-    });
-
-    if (!githubUser.email) {
-      const { data: emails } = await axios.get('https://api.github.com/user/emails', {
-        headers: { Authorization: `Bearer ${accessTokenResponse.access_token}` },
+  
+      const accessToken = accessTokenResponse.access_token;
+  
+      // Fetch the GitHub user data
+      const { data: githubUser } = await axios.get('https://api.github.com/user', {
+        headers: { Authorization: `Bearer ${accessToken}` },
       });
-      githubUser.email = emails.find(e => e.primary).email;
+  
+      console.log('GitHub User Data:', githubUser); // Log the user data
+  
+      // Email retrieval
+      if (!githubUser.email) {
+        const { data: emails } = await axios.get('https://api.github.com/user/emails', {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+        githubUser.email = emails.find(e => e.primary)?.email; // Use optional chaining
+      }
+  
+      return githubUser;
+    } catch (error) {
+      this.logger.error('Error fetching GitHub user', error.stack);
+      throw new UnauthorizedException('Failed to fetch GitHub user');
     }
-
-    return githubUser;
   }
 
   private async verifyAppleToken(token: string) {

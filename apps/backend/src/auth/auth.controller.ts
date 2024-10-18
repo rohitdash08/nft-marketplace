@@ -10,8 +10,9 @@ import { JwtPayload } from 'jsonwebtoken';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @Post('google/callback')
+  @Post('google')
   async googleLogin(@Body('token') token: string, @Res() res: Response) {
+    console.log('Google login hit, token:', token);  
     if (!token) {
       throw new UnauthorizedException('No token provided');
     }
@@ -19,19 +20,10 @@ export class AuthController {
     this.setTokens(res, authResult);
     return res.send(authResult);
   }
-
-  @Post('github')
-  async githubLogin(@Body('code') code: string, @Res() res: Response) {
-    if (!code) {
-      throw new UnauthorizedException('No code provided');
-    }
-    const authResult = await this.authService.githubLogin(code);
-    this.setTokens(res, authResult);
-    return res.send(authResult);
-  }
   
   @Get('github/callback')
   async githubCallback(@Query('code') code: string, @Res() res: Response) {
+    console.log('Received GitHub callback with code:', code);
     if (!code) {
       throw new UnauthorizedException('No code provided');
     }
@@ -39,10 +31,10 @@ export class AuthController {
     this.setTokens(res, authResult);
     
     // Redirect to your frontend with the access token
-    return res.redirect(`${process.env.FRONTEND_URL}/login?token=${authResult.accessToken}`);
+    return res.redirect(`${process.env.FRONTEND_URL}/home`);
   }
   
-  @Post('apple')
+  @Post('apple/callback')
   async appleLogin(@Body('token') token: string, @Res() res: Response) {
     if (!token) {
       throw new UnauthorizedException('No token provided');

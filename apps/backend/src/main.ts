@@ -19,11 +19,11 @@ async function bootstrap() {
 
   // Enable CORS
   app.enableCors({
-    origin:'http://localhost:3000', // Adjust this to your frontend URL
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    origin:'http://localhost:4200', // Adjust this to your frontend URL
+    methods: ['GET,HEAD,PUT,PATCH,POST,DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   });
-
+  
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
 

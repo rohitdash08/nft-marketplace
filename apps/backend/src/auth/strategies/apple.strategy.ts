@@ -1,28 +1,28 @@
-// apps/backend/src/auth/strategies/google.strategy.ts
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { Strategy } from 'passport-google-oauth20';
+import { Strategy, VerifyCallback } from 'passport-apple';
 
 @Injectable()
 export class AppleStrategy extends PassportStrategy(Strategy, 'apple') {
   constructor() {
     super({
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: 'http://localhost:3000/api/auth/apple/callback',
-      scope: ['email', 'profile'],
+      clientID: process.env.APPLE_CLIENT_ID,
+      teamID: process.env.APPLE_TEAM_ID,
+      keyID: process.env.APPLE_KEY_ID,
+      privateKey: process.env.APPLE_PRIVATE_KEY.replace(/\\n/g, '\n'), // Ensure proper formatting of private key
+      callbackURL: process.env.APPLE_CALLBACK_URL || 'http://localhost:3000/api/auth/apple/callback', 
+      passReqToCallback: true,
     });
   }
 
-  async validate(accessToken: string, refreshToken: string, profile: any) {
-    const { name, emails, photos } = profile;
+  async validate(req: any, accessToken: string, refreshToken: string, idToken: string, profile: any, done: VerifyCallback): Promise<any> {
     const user = {
-      email: emails[0].value,
-      firstName: name.givenName,
-      lastName: name.familyName,
-      picture: photos[0].value,
+      email: profile.email,
+      firstName: profile.firstName || '', // Apple does not always provide a first name
+      lastName: profile.lastName || '', // Apple does not always provide a last name
+      picture: profile.picture || '', // Apple does not provide a picture by default
       accessToken,
     };
-    return user;
+    done(null, user);
   }
 }

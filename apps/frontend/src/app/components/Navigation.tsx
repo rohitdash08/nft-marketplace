@@ -7,12 +7,12 @@ export default function Navigation() {
   const { user, logout } = useAuth();
 
   return (
-    <nav className="bg-gray-800 text-white p-4">
-      <div className="container mx-auto flex justify-between items-center">
-        <Link href="/" className="text-xl font-bold">
+    <nav className="bg-gray-800 text-white ">
+      <div className="container mx-auto grid grid-cols-3 justify-between items-center">
+        <Link href="/" className="text-xl pt-1 font-bold flex items-center justify-start">
           NFT Marketplace
         </Link>
-        <div className="space-x-4">
+        <div className="space-x-4 flex items-center justify-between">
           <Link href="/marketplace" className="hover:text-gray-300">
             Marketplace
           </Link>

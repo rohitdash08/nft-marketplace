@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 
 declare global {
@@ -18,6 +18,7 @@ declare global {
 
 export default function GoogleLogin() {
   const { login } = useAuth();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -47,7 +48,7 @@ export default function GoogleLogin() {
 
   const handleCredentialResponse = async (response: any) => {
     try {
-      const result = await fetch('/api/auth/google', {
+      const result = await fetch('http://localhost:3000/api/auth/google', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token: response.credential }),
@@ -63,5 +64,6 @@ export default function GoogleLogin() {
     }
   };
 
+ 
   return <div id="googleButton"></div>;
 }
