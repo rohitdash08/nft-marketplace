@@ -1,10 +1,7 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "targetDefaults": {
-    "build": {
-      "cache": true,
-      "dependsOn": ["^build"]
-    },
+    "build": { "cache": true, "dependsOn": ["^build"] },
     "lint": {
       "cache": true,
       "inputs": [
@@ -17,15 +14,8 @@
     "@nx/jest:jest": {
       "cache": true,
       "inputs": ["default", "^default", "{workspaceRoot}/jest.preset.js"],
-      "options": {
-        "passWithNoTests": true
-      },
-      "configurations": {
-        "ci": {
-          "ci": true,
-          "codeCoverage": true
-        }
-      }
+      "options": { "passWithNoTests": true },
+      "configurations": { "ci": { "ci": true, "codeCoverage": true } }
     },
     "@nx/eslint:lint": {
       "cache": true,
@@ -45,19 +35,12 @@
         "bundler": "vite",
         "babel": true
       },
-      "component": {
-        "style": "tailwindcss"
-      },
-      "library": {
-        "style": "tailwindcss",
-        "linter": "eslint"
-      }
+      "component": { "style": "tailwindcss" },
+      "library": { "style": "tailwindcss", "linter": "eslint" }
     },
     "@nx/next": {
-      "application": {
-        "style": "tailwindcss",
-        "linter": "eslint"
-      }
+      "application": { "style": "tailwindcss", "linter": "eslint" }
     }
-  }
+  },
+  "nxCloudId": "6712889225119ad6ab8a3694"
 }
