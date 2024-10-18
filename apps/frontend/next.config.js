@@ -19,4 +19,14 @@ const plugins = [
   withNx,
 ];
 
+module.exports = {
+  async rewrites() {
+    return [
+      {
+        source: '/auth/:path*',
+        destination: 'http://localhost:3000/auth/:path*',
+      },
+    ];
+  },
+};
 module.exports = composePlugins(...plugins)(nextConfig);

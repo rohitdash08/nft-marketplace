@@ -1,3 +1,5 @@
+
+
 export default function Index() {
   /*
    * Replace the elements below with your own.
@@ -14,7 +16,9 @@ export default function Index() {
               Welcome frontend 👋
             </h1>
           </div>
-
+           <div>
+           
+           </div>
           <div id="hero" className="rounded">
             <div className="text-container">
               <h2>
