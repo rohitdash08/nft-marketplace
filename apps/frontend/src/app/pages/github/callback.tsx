@@ -23,7 +23,6 @@ export default function GithubCallback() {
           login(data.token);
            // Log the user in with the token
           router.push('/home'); 
-          console.log("dashboard")// Redirect to dashboard
         } else {
           console.error('Login failed');
         }
@@ -32,7 +31,7 @@ export default function GithubCallback() {
         console.error('GitHub login error:', error);
       });
     }
-  }, [router.query]);
+  }, [router.query ,login,router]);
 
   return <div>Logging in with GitHub...</div>;
 }

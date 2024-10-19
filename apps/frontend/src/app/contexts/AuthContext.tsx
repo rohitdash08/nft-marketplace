@@ -39,8 +39,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
-    setUser(null);
+    try {
+      // Call the backend to invalidate the refresh token
+      fetch('http://localhost:3000/api/auth/logout', {
+        method: 'POST',
+        credentials: 'include', // Ensure cookies are sent along with the request
+      });
+  
+      // Clear the token from localStorage and reset the user context
+      localStorage.removeItem('token');
+      setUser(null);
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
   };
 
   return (

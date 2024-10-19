@@ -13,18 +13,9 @@ export default function Navigation() {
           NFT Marketplace
         </Link>
         <div className="space-x-4 flex items-center justify-between">
-          <Link href="/marketplace" className="hover:text-gray-300">
-            Marketplace
-          </Link>
           {user ? (
             <>
-              <Link href="/create" className="hover:text-gray-300">
-                Create NFT
-              </Link>
-              <Link href="/dashboard" className="hover:text-gray-300">
-                Dashboard
-              </Link>
-              <button onClick={logout} className="hover:text-gray-300">
+              <button onClick={logout} className="bg-blue-400 hover:text-gray-300">
                 Logout
               </button>
             </>

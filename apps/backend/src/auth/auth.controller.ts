@@ -76,7 +76,7 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   async logout(@Req() req: Request, @Res() res: Response) {
     const refreshToken = req.cookies['refreshToken'];
-    if (refreshToken) {
+    if (!refreshToken) {
       throw new UnauthorizedException('Refresh token not found');
     }
     try {
