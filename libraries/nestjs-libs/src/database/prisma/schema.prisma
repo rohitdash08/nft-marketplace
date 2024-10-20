@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
     provider = "prisma-client-js"
 }
@@ -8,4 +5,194 @@ generator client {
 datasource db {
     provider = "postgresql"
     url      = env("DATABASE_URL")
+}
+
+model User {
+    id            String   @id @default(uuid())
+    email         String
+    password      String?
+    providerName  Provider
+    name          String?
+    lastName      String?
+    isSuperAdmin  Boolean  @default(false)
+    bio           String?
+    pictureId     String?
+    picture       Media?   @relation(fields: [pictureId], references: [id])
+    providerId    String?
+    walletAddress String?  @unique // Solana wallet address
+    timezone      Int
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+    lastOnline    DateTime @default(now())
+    activated     Boolean  @default(true)
+
+    // NFT Related Relations
+    ownedNFTs            NFT[]         @relation("owner")
+    createdNFTs          NFT[]         @relation("creator")
+    listings             Listing[]
+    bids                 Bid[]
+    collections          Collection[]
+    transactionsMade     Transaction[] @relation("buyer")
+    transactionsReceived Transaction[] @relation("seller")
+
+    @@unique([email, providerName])
+    @@index([walletAddress])
+    @@index([lastOnline])
+}
+
+model NFT {
+    id          String  @id @default(uuid())
+    tokenId     String  @unique // Solana token address
+    name        String
+    description String?
+    imageUrl    String
+    metadata    Json // Store additional NFT metadata
+    mintAddress String  @unique // Solana mint address
+    supply      Int     @default(1)
+    royaltyFee  Float   @default(0) // Percentage
+
+    // Relations
+    ownerId      String
+    owner        User          @relation("owner", fields: [ownerId], references: [id])
+    creatorId    String
+    creator      User          @relation("creator", fields: [creatorId], references: [id])
+    collectionId String?
+    collection   Collection?   @relation(fields: [collectionId], references: [id])
+    listings     Listing[]
+    transactions Transaction[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([tokenId])
+    @@index([mintAddress])
+    @@index([ownerId])
+    @@index([collectionId])
+}
+
+model Collection {
+    id          String  @id @default(uuid())
+    name        String
+    description String?
+    imageUrl    String?
+    bannerUrl   String?
+    verified    Boolean @default(false)
+
+    // Relations
+    creatorId String
+    creator   User   @relation(fields: [creatorId], references: [id])
+    nfts      NFT[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([creatorId])
+}
+
+model Listing {
+    id     String        @id @default(uuid())
+    price  Float // Price in SOL
+    status ListingStatus @default(ACTIVE)
+
+    // Relations
+    nftId    String
+    nft      NFT    @relation(fields: [nftId], references: [id])
+    sellerId String
+    seller   User   @relation(fields: [sellerId], references: [id])
+    bids     Bid[]
+
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    endedAt   DateTime?
+
+    @@index([nftId])
+    @@index([sellerId])
+    @@index([status])
+}
+
+model Bid {
+    id     String    @id @default(uuid())
+    amount Float // Amount in SOL
+    status BidStatus @default(PENDING)
+
+    // Relations
+    listingId String
+    listing   Listing @relation(fields: [listingId], references: [id])
+    bidderId  String
+    bidder    User    @relation(fields: [bidderId], references: [id])
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([listingId])
+    @@index([bidderId])
+}
+
+model Transaction {
+    id        String            @id @default(uuid())
+    type      TransactionType
+    amount    Float // Amount in SOL
+    signature String            @unique // Solana transaction signature
+    status    TransactionStatus @default(PENDING)
+
+    // Relations
+    nftId    String
+    nft      NFT    @relation(fields: [nftId], references: [id])
+    buyerId  String
+    buyer    User   @relation("buyer", fields: [buyerId], references: [id])
+    sellerId String
+    seller   User   @relation("seller", fields: [sellerId], references: [id])
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([nftId])
+    @@index([buyerId])
+    @@index([sellerId])
+    @@index([signature])
+    @@index([status])
+}
+
+// Keeping Media model for user profile pictures
+model Media {
+    id        String   @id @default(uuid())
+    name      String
+    path      String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    User      User[]
+}
+
+enum Provider {
+    LOCAL
+    GITHUB
+    GOOGLE
+    PHANTOM // Added for Phantom wallet authentication
+}
+
+enum ListingStatus {
+    ACTIVE
+    SOLD
+    CANCELLED
+    EXPIRED
+}
+
+enum BidStatus {
+    PENDING
+    ACCEPTED
+    REJECTED
+    CANCELLED
+}
+
+enum TransactionType {
+    MINT
+    SALE
+    TRANSFER
+    BURN
+}
+
+enum TransactionStatus {
+    PENDING
+    CONFIRMED
+    FAILED
 }
