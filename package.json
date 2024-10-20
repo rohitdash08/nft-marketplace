@@ -17,12 +17,20 @@
   "private": true,
   "dependencies": {
     "@nestjs/common": "^10.0.2",
+    "@nestjs/config": "^3.2.3",
     "@nestjs/core": "^10.0.2",
+
+    "@nestjs/jwt": "^10.2.0",
     "@nestjs/microservices": "^10.3.1",
+    "@nestjs/passport": "^10.0.3",
+
+    "@nestjs/microservices": "^10.3.1",
+
     "@nestjs/platform-express": "^10.0.2",
     "@nestjs/schedule": "^4.0.0",
     "@nestjs/serve-static": "^4.0.1",
     "@nestjs/swagger": "^7.3.0",
+    "@nestjs/typeorm": "^10.0.2",
     "@nx/eslint": "19.7.2",
     "@nx/eslint-plugin": "19.7.2",
     "@nx/jest": "19.7.2",
@@ -38,16 +46,41 @@
     "@sweetalert2/theme-dark": "^5.0.16",
     "@types/bcrypt": "^5.0.2",
     "@types/concat-stream": "^2.0.3",
+
+    "axios": "^1.7.7",
+    "cache-manager": "^6.1.1",
+    "clsx": "^2.1.0",
+    "crypto": "^1.0.1",
+    "express": "^4.21.1",
+    "google-auth-library": "^9.14.2",
+    "jsonwebtoken": "^9.0.2",
+    "jwks-rsa": "^3.1.0",
+
     "@types/nodemailer": "^6.4.16",
     "axios": "^1.6.7",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "clsx": "^2.1.0",
     "cookie-parser": "^1.4.6",
+
     "next": "14.2.3",
     "next-plausible": "^3.12.0",
     "nodemailer": "^6.9.15",
     "nx": "19.7.2",
+
+    "passport": "^0.7.0",
+    "passport-apple": "^2.0.2",
+    "passport-github2": "^0.1.12",
+    "passport-google-oauth20": "^2.0.0",
+    "passport-jwt": "^4.0.1",
+    "pg": "^8.13.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^7.8.0",
+    "typeorm": "^0.3.20",
+    "winston": "^3.15.0"
+
     "prisma": "^5.21.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",
@@ -55,6 +88,7 @@
     "resend": "^3.2.0",
     "rxjs": "^7.8.0",
     "tldts": "^6.1.47"
+
   },
   "devDependencies": {
     "@heroicons/react": "^2.1.5",
@@ -68,6 +102,7 @@
     "@types/cookie-parser": "^1.4.6",
     "@types/jest": "^29.5.12",
     "@types/node": "18.16.9",
+    "@types/passport-apple": "^2.0.3",
     "@types/react": "18.3.1",
     "@types/react-dom": "18.3.0",
     "@types/three": "^0.157.2",
