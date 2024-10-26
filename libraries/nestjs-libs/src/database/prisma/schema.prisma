@@ -10,6 +10,7 @@ datasource db {
 model User {
     id            String   @id @default(uuid())
     email         String
+    username      String?
     password      String?
     providerName  Provider
     name          String?
@@ -26,30 +27,49 @@ model User {
     lastOnline    DateTime @default(now())
     activated     Boolean  @default(true)
 
-    // NFT Related Relations
-    ownedNFTs            NFT[]         @relation("owner")
-    createdNFTs          NFT[]         @relation("creator")
+    // Relations
+    ownedNFTs            NFT[]          @relation("owner")
+    createdNFTs          NFT[]          @relation("creator")
     listings             Listing[]
     bids                 Bid[]
     collections          Collection[]
-    transactionsMade     Transaction[] @relation("buyer")
-    transactionsReceived Transaction[] @relation("seller")
+    transactionsMade     Transaction[]  @relation("buyer")
+    transactionsReceived Transaction[]  @relation("seller")
+    notifications        Notification[] // User notifications relation
 
     @@unique([email, providerName])
     @@index([walletAddress])
     @@index([lastOnline])
 }
 
+model Notification {
+    id        String    @id @default(uuid())
+    userId    String
+    user      User      @relation(fields: [userId], references: [id]) // Relates notification to User
+    content   String // Notification content
+    link      String? // Optional link in the notification
+    readAt    DateTime? // Optional read timestamp
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    deletedAt DateTime?
+
+    @@index([createdAt])
+    @@index([userId])
+    @@index([deletedAt])
+}
+
 model NFT {
-    id          String  @id @default(uuid())
-    tokenId     String  @unique // Solana token address
+    id          String    @id @default(uuid())
+    tokenId     String    @unique // Solana token address
     name        String
     description String?
     imageUrl    String
     metadata    Json // Store additional NFT metadata
-    mintAddress String  @unique // Solana mint address
-    supply      Int     @default(1)
-    royaltyFee  Float   @default(0) // Percentage
+    mintAddress String    @unique // Solana mint address
+    supply      Int       @default(1)
+    royaltyFee  Float     @default(0) // Percentage
+    price       Float?
+    status      NFTStatus @default(MINTED)
 
     // Relations
     ownerId      String
@@ -77,6 +97,7 @@ model Collection {
     imageUrl    String?
     bannerUrl   String?
     verified    Boolean @default(false)
+    floorPrice  Float?
 
     // Relations
     creatorId String
@@ -195,4 +216,11 @@ enum TransactionStatus {
     PENDING
     CONFIRMED
     FAILED
+}
+
+enum NFTStatus {
+    MINTED
+    LISTED
+    SOLD
+    TRANSFERRED
 }
