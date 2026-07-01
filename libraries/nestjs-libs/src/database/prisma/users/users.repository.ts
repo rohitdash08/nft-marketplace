@@ -128,6 +128,28 @@ export class UsersRepository {
     });
   }
 
+  createUser(data: {
+    email: string;
+    password: string;
+    provider: Provider;
+    providerId?: string;
+    name?: string;
+    role?: string;
+    activated?: boolean;
+  }) {
+    return this._user.model.user.create({
+      data: {
+        email: data.email,
+        password: data.password || null,
+        providerName: data.provider,
+        providerId: data.providerId || null,
+        name: data.name || null,
+        activated: data.activated ?? true,
+        timezone: 0,
+      },
+    });
+  }
+
   updatePassword(id: string, password: string) {
     return this._user.model.user.update({
       where: {

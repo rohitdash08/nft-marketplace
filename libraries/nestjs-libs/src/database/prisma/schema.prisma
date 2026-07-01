@@ -188,6 +188,7 @@ enum Provider {
     LOCAL
     GITHUB
     GOOGLE
+    APPLE
     PHANTOM // Added for Phantom wallet authentication
 }
 
