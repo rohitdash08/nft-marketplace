@@ -23,6 +23,18 @@ export class UsersService {
     return this._userRepository.getUserByProvider(providerId, provider);
   }
 
+  createUser(data: {
+    email: string;
+    password: string;
+    provider: Provider;
+    providerId?: string;
+    name?: string;
+    role?: string;
+    activated?: boolean;
+  }) {
+    return this._userRepository.createUser(data);
+  }
+
   activateUser(id: string) {
     return this._userRepository.activateUser(id);
   }
