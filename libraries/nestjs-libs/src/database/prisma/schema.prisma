@@ -189,6 +189,7 @@ enum Provider {
     GITHUB
     GOOGLE
     PHANTOM // Added for Phantom wallet authentication
+    APPLE // Added for Apple Sign In
 }
 
 enum ListingStatus {
